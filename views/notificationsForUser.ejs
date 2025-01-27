@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Notifications</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet" />
+  <style>
+    /* Custom styles for notifications */
+    .notification-item {
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s ease;
+      margin-bottom: 20px;
+      padding: 15px;
+      background-color: #f6f4f2;
+      /* Light beige color */
+    }
+
+    .notification-title {
+      font-size: 1.1rem;
+      color: #425664;
+      /* Dark teal color */
+      font-weight: bold;
+    }
+
+    .notification-date {
+      font-size: 0.9rem;
+      color: #c6ad8f;
+      /* Light olive color */
+    }
+
+    .notification-section {
+      margin-top: 20px;
+    }
+
+    /* Header for notifications */
+    .notification-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      background-color: #425664;
+      /* Dark teal color for header */
+      color: #fff;
+      /* White text for the header */
+      padding: 10px 20px;
+      border-radius: 5px;
+    }
+
+    .notification-header h2 {
+      margin: 0;
+      font-size: 1.5rem;
+    }
+
+    /* Optional form styling */
+    .notification-form {
+      margin-top: 30px;
+      background-color: #f6f4f2;
+      /* Light beige color */
+      padding: 20px;
+      border-radius: 5px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .notification-form button {
+      background-color: #c6ad8f;
+      /* Light olive color for button */
+      color: white;
+      padding: 10px 15px;
+      border: none;
+      border-radius: 5px;
+    }
+
+    .notification-form button:hover {
+      background-color: #a08a6d;
+      /* Darker olive color on hover */
+    }
+
+    .notification-item:hover {
+      background-color: #d9d9d9;
+      /* Light gray hover effect */
+    }
+
+    /* Back button styling */
+    .btn-back {
+      background-color: #6c757d;
+      /* Grey background */
+      color: white;
+      border: none;
+      border-radius: 5px;
+      padding: 8px 15px;
+      font-size: 0.9rem;
+      margin-bottom: 20px;
+      display: inline-block;
+    }
+
+    .btn-back:hover {
+      background-color: #5a6268;
+      /* Slightly darker gray on hover */
+      color: white;
+    }
+
+    .btn-back i {
+      margin-right: 5px;
+    }
+
+    /* Style for no notifications message */
+    .no-notifications-message {
+      text-align: center;
+      font-size: 1.5rem;
+      color: #888;
+      margin-top: 30px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="container mt-4 notification-section">
+    <!-- Back Button -->
+    <a href="javascript:history.back()" class="btn-back">
+      <i class="bi bi-arrow-left-circle"></i> Back
+    </a>
+
+    <!-- Header for Notifications -->
+    <div class="notification-header">
+      <h2><b>Notifications</b></h2>
+    </div>
+
+    <!-- Check if there are any notifications -->
+    <% if (!notifications || notifications.length===0) { %>
+      <!-- If no notifications, display the "No notifications" message -->
+      <div class="no-notifications-message">
+        <p>No notifications currently</p>
+      </div>
+      <% } else { %>
+        <!-- If there are notifications, display them -->
+        <% notifications.reverse().forEach(function(notification) { %>
+          <div class="notification-item">
+            <h5 class="notification-title">
+              <%= notification.message %>
+            </h5>
+            <p class="notification-date"><small>Reminder Date: <%= notification.reminder_date %></small></p>
+          </div>
+          <% }); %>
+            <% } %>
+
+  </div>
+
+  <!-- Bootstrap Scripts -->
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+
+</html>

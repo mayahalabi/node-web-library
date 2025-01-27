@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link href="/css/style.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet" />
+    <title>Comments</title>
+    <style>
+        /* Custom styles for buttons */
+        .btn-update {
+            background-color: #425664;
+            color: white;
+            border: none;
+            margin-right: 10px;
+            /* Space between buttons */
+        }
+
+        .btn-update:hover {
+            background-color: #2f3d48;
+            color: #ffffff;
+        }
+
+        .btn-delete {
+            background-color: #c6ad8f;
+            color: white;
+            border: none;
+        }
+
+        .btn-delete:hover {
+            background-color: #b09579;
+            color: #ffffff;
+        }
+
+        .btn-add {
+            background-color: #6c757d;
+            color: white;
+            border: none;
+            font-size: 1rem;
+            padding: 10px 15px;
+            margin-bottom: 20px;
+        }
+
+        .btn-add:hover {
+            background-color: #5a6268;
+            color: white;
+        }
+
+        /* Table Styling */
+        .table th,
+        .table td {
+            vertical-align: middle;
+            padding: 0.75rem;
+            word-wrap: break-word;
+            /* Ensure long words wrap within the cell */
+        }
+
+        .table th {
+            text-align: center;
+        }
+
+        .table td {
+            text-align: center;
+        }
+
+        /* Header Styling */
+        h2 {
+            color: #425664;
+            margin-bottom: 20px;
+        }
+
+        /* Ensure the Add Comment button stays at the bottom-right of the table */
+        .add-author-container {
+            text-align: right;
+            margin-bottom: 15px;
+        }
+
+        /* Style for invalid or missing date */
+        .invalid-date {
+            color: red;
+            font-style: italic;
+        }
+
+        /* Button container to keep buttons aligned horizontally */
+        .action-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            /* Space between the buttons */
+        }
+
+        /* Specific Styling for Comment Description */
+        .comment-description {
+            max-width: none;
+            /* Remove any max-width */
+            white-space: normal;
+            /* Allow the text to wrap properly */
+            word-wrap: break-word;
+            /* Ensure long words wrap to the next line */
+            word-break: break-word;
+            /* Ensure long words break properly */
+        }
+    </style>
+</head>
+
+<body>
+    <%- include('../adminPartial/navbarAdmin', {role: 'admin' }) %>
+
+        <div class="container">
+            <!-- Add Comment Button Positioned at Bottom Right -->
+            <div class="add-author-container">
+                <a href="/api/comments/add-form" class="btn btn-add">
+                    <i class="bi bi-plus-circle"></i> Add Comment
+                </a>
+            </div>
+
+            <!-- Header for Comment Management -->
+            <h2><b>Comment Management</b></h2>
+
+            <!-- Table displaying comments -->
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Comment ID</th>
+                        <th>Book ID</th>
+                        <th>Username</th>
+                        <th>Rating</th>
+                        <th>Comment Date</th>
+                        <th>Comment Description</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% for (let i=0; i < comments.length; i++) { %>
+                        <tr>
+                            <td>
+                                <%= comments[i].comment_id %>
+                            </td>
+                            <td>
+                                <%= comments[i].book_id %>
+                            </td>
+                            <td>
+                                <%= comments[i].username %>
+                            </td>
+                            <td>
+                                <%= comments[i].rating %>
+                            </td>
+                            <td>
+                                <%= comments[i].comment_date %>
+                            </td>
+                            <td class="comment-description">
+                                <%= comments[i].comment_description %>
+                            </td>
+                            <td class="action-buttons">
+                                <!-- Edit Button -->
+                                <a href="/api/comments/edit-form/<%= comments[i].comment_id %>"
+                                    class="btn btn-sm btn-update" title="Edit Comment">
+                                    <i class="bi bi-pencil"></i> Edit
+                                </a>
+
+                                <!-- Delete Button -->
+                                <a href="/api/comments/delete/<%= comments[i].comment_id %>"
+                                    class="btn btn-sm btn-delete" title="Delete Comment">
+                                    <i class="bi bi-trash"></i> Delete
+                                </a>
+                            </td>
+                        </tr>
+                        <% } %>
+                </tbody>
+            </table>
+        </div>
+</body>
+
+</html>

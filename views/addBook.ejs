@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Add Book</title>
+
+  <!-- Link to Bootstrap CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
+    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous" />
+
+  <style>
+    /* Your existing CSS styles */
+    body {
+      background-color: #f6f4f2;
+      font-family: "Arial", sans-serif;
+    }
+
+    .container {
+      background-color: #ffffff;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      padding: 40px;
+      max-width: 600px;
+      margin-top: 50px;
+    }
+
+    h1 {
+      color: #425664;
+      font-size: 30px;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .form-group label {
+      color: #425664;
+      font-weight: bold;
+    }
+
+    .form-control {
+      border-radius: 6px;
+      border: 1px solid #c6ad8f;
+      padding: 14px;
+      font-size: 18px;
+      transition: all 0.3s ease;
+    }
+
+    .form-control:focus {
+      border-color: #425664;
+      box-shadow: 0 0 5px rgba(66, 86, 100, 0.5);
+    }
+
+    .btn-primary {
+      background-color: #c6ad8f;
+      color: #ffffff;
+      font-size: 16px;
+      padding: 12px;
+      border-radius: 6px;
+      border: none;
+      width: 100%;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .btn-primary:hover {
+      background-color: #425664;
+      color: #ffffff;
+    }
+
+    .btn-back {
+      background-color: #6c757d;
+      color: white;
+      border: none;
+      font-size: 16px;
+      padding: 12px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      margin-bottom: 20px;
+    }
+
+    .btn-back:hover {
+      background-color: #5a6268;
+      color: white;
+    }
+
+    .preview-img {
+      width: 150px;
+      height: 150px;
+      object-fit: cover;
+      border-radius: 50%;
+      margin-top: 20px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+      display: none;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Back Button at Top Left, outside the container -->
+  <a href="/api/books/adminManagement" class="btn btn-back" style="margin: 20px">
+    <i class="bi bi-arrow-left-circle"></i> Back
+  </a>
+
+  <div class="container">
+    <h1>Add New Book</h1>
+
+    <!-- Add Book Form -->
+    <form id="addBookForm" enctype="multipart/form-data">
+      <div class="form-group">
+        <label for="title">Title</label>
+        <input type="text" id="title" name="title" class="form-control" placeholder="Enter Title" required />
+      </div>
+      <div class="form-group">
+        <label for="isbn">ISBN</label>
+        <input type="text" id="isbn" name="isbn" class="form-control" placeholder="Enter ISBN" required />
+      </div>
+      <div class="form-group">
+        <label for="publisher">Publisher</label>
+        <input type="text" id="publisher" name="publisher" class="form-control" placeholder="Enter Publisher"
+          required />
+      </div>
+      <div class="form-group">
+        <label for="published_year">Published Year</label>
+        <input type="number" id="published_year" name="published_year" class="form-control"
+          placeholder="Enter Published Year" required />
+      </div>
+      <div class="form-group">
+        <label for="author_id">Author</label>
+        <!-- Author Select Dropdown -->
+        <select id="author_id" name="author_id" class="form-control" required>
+          <option value="" disabled selected>Select Author</option>
+          <% authors.forEach(author=> { %>
+            <option value="<%= author.author_id %>">
+              <%= author.first_name + ' ' + author.last_name %>
+            </option>
+            <% }); %>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="status">Status</label>
+        <input type="text" id="status" name="status" class="form-control" placeholder="Enter Status" required />
+      </div>
+      <div class="form-group">
+        <label for="quantity">Quantity</label>
+        <input type="number" id="quantity" name="quantity" class="form-control" placeholder="Enter Quantity" required />
+      </div>
+      <div class="form-group">
+        <label for="rate">Rate (0 - 5)</label>
+        <input type="number" id="rate" name="rate" class="form-control" placeholder="Enter Rate" min="0" max="5"
+          required />
+      </div>
+      <div class="form-group">
+        <label for="description">Description</label>
+        <textarea id="description" name="description" class="form-control" placeholder="Enter Description"
+          required></textarea>
+      </div>
+
+      <!-- Add file input for image -->
+      <div class="form-group">
+        <label for="image_data">Upload Book Image</label>
+        <input type="file" id="image_data" name="image_data" class="form-control-file" accept="image/*" />
+        <img id="imagePreview" class="preview-img" alt="Image Preview" />
+      </div>
+
+      <button type="submit" class="btn btn-primary">Add Book</button>
+    </form>
+  </div>
+
+  <!-- JavaScript -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const form = document.getElementById('addBookForm');
+      const imageInput = document.getElementById('image_data');
+      const imagePreview = document.getElementById('imagePreview');
+
+      // Handle image preview
+      imageInput.addEventListener('change', (event) => {
+        const file = event.target.files[0];
+        if (file) {
+          const reader = new FileReader();
+          reader.onload = () => {
+            imagePreview.src = reader.result; // Set image source
+            imagePreview.style.display = 'block'; // Show the preview image
+          };
+          reader.readAsDataURL(file); // Convert file to Base64 for preview
+        } else {
+          imagePreview.style.display = 'none'; // Hide preview if no file
+        }
+      });
+
+      // Form submission handler
+      form.addEventListener('submit', async (event) => {
+        event.preventDefault();
+
+        const formData = new FormData(form); // Create FormData object
+
+        const imageInput = document.getElementById('image_data');
+        const file = imageInput.files[0];
+
+        // File size validation (5MB max)
+        if (file && file.size > 5 * 1024 * 1024) {
+          alert("File size exceeds 5MB limit.");
+          return;
+        }
+
+        // File type validation (only images allowed)
+        if (file && !['image/jpeg', 'image/png', 'image/gif'].includes(file.type)) {
+          alert("Invalid file type. Only JPG, PNG, and GIF are allowed.");
+          return;
+        }
+
+        try {
+          const response = await fetch('/api/books/create-book', {
+            method: 'POST',
+            body: formData, // Send form data (including image)
+          });
+
+          const result = await response.json();
+          if (response.ok) {
+            alert('Book added successfully!');
+            window.location.href = '/api/books/adminManagement'; // Redirect after success
+          } else {
+            alert(result.message || 'Error occurred while adding the book.');
+          }
+        } catch (error) {
+          console.error('Error:', error);
+          alert('An error occurred while adding the book. Please try again.');
+        }
+      });
+    });
+  </script>
+</body>
+
+</html>

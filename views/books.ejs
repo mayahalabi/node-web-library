@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Book</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet" />
+  <style>
+    /* Custom styles for buttons */
+    .btn-add {
+      background-color: #6c757d;
+      color: white;
+      border: none;
+      font-size: 1rem;
+      padding: 10px 15px;
+      margin-bottom: 20px;
+    }
+
+    .btn-add:hover {
+      background-color: #5a6268;
+      color: white;
+    }
+
+    .book-item {
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s ease;
+      margin-bottom: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .book-item img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    .book-item:hover {
+      transform: scale(1.05);
+    }
+
+    .book-title {
+      text-align: center;
+      margin-top: 10px;
+      font-size: 1.1rem;
+      color: #333;
+    }
+
+    /* Header Styling */
+    h2 {
+      color: #425664;
+      margin-bottom: 20px;
+    }
+
+    .container {
+      margin-top: 20px;
+    }
+
+    /* Ensure the Add Book button stays at the bottom-right of the table */
+    .add-book-container {
+      text-align: right;
+      margin-bottom: 15px;
+    }
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .header h2 {
+      margin: 0;
+    }
+  </style>
+</head>
+
+<body>
+  <%- include('adminPartial/navbarAdmin', { role: role, username: username }) %>
+
+    <div class="container mt-4">
+      <!-- Header for Book Management, aligned to the left -->
+      <div class="header">
+        <h2><b>
+            <%= role !=='user' ? 'Book Management' : 'Books' %>
+          </b></h2>
+
+        <!-- Show the "Add Book" button only if the role is 'admin' -->
+        <% if (role!=='user' ) { %>
+          <a href="/api/books/add-form" class="btn btn-add">
+            <i class="bi bi-plus-circle"></i> Add Book
+          </a>
+          <% } %>
+      </div>
+
+      <!-- Book Grid -->
+      <div class="row">
+        <% books.forEach((book)=> { %>
+          <div class="col-6 col-sm-4 col-md-3 col-lg-2 mb-4">
+            <a href="<%= role === 'user' ? '/api/books/usersbooks/details/' + book.book_id + '?username=' + username : '/api/books/details/' + book.book_id %>"
+              class="book-item">
+              <!-- Render Base64 Image -->
+              <% if (book.image_data) { %>
+                <img src="data:image/'jpeg' %>;base64,<%= book.image_data %>" alt="<%= book.title %>" />
+                <% } else { %>
+                  <img src="path/to/default-image.jpg" alt="Default Image" />
+                  <% } %>
+                    <p class="book-title">
+                      <%= book.title %>
+                    </p>
+            </a>
+          </div>
+          <% }); %>
+      </div>
+    </div>
+
+    <!-- Bootstrap Scripts -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.bundle.min.js"></script>
+
+    <%- include('footer') %>
+</body>
+
+</html>

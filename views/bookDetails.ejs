@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Book Details</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
+  <style>
+    /* Custom colors */
+    .card-header {
+      background-color: #425664;
+      color: #f6f4f2;
+    }
+
+    .card-footer {
+      background-color: #425664;
+      color: #f6f4f2;
+    }
+
+    .card-body {
+      background-color: #d9d9d9;
+      color: #425664;
+    }
+
+    .container {
+      background-color: #f6f4f2;
+      padding: 30px;
+    }
+
+    .book-image-container {
+      background-color: #d9d9d9;
+      /* Light gray background */
+      border: 2px solid #c6ad8f;
+      /* Beige border */
+      padding: 15px;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      text-align: center;
+    }
+
+    .book-image {
+      max-width: 100%;
+      height: auto;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .book-title {
+      color: #425664;
+    }
+
+    /* Card buttons */
+    .card-footer .btn {
+      border-radius: 8px;
+      padding: 10px 20px;
+      font-size: 16px;
+    }
+
+    .card-footer .btn-secondary {
+      background-color: #6c757d;
+      border-color: #6c757d;
+    }
+
+    .card-footer .btn-primary {
+      background-color: #425664;
+      border-color: #6c757d;
+    }
+
+    .card-footer .btn-secondary:hover {
+      background-color: #5a6268;
+      border-color: #545b62;
+    }
+
+    .card-footer .btn-primary:hover {
+      background-color: #364e58;
+      border-color: #5a636c;
+    }
+
+    .card-footer a {
+      margin: 0 10px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container mt-5">
+    <!-- Book details section -->
+    <h1 class="my-4 text-center book-title">Book Details</h1>
+
+    <div class="row">
+      <!-- Left side: Book image with enhanced styling -->
+      <div class="col-md-4">
+        <div class="book-image-container">
+          <!-- Display uploaded image here -->
+          <img id="bookImageDisplay" src="data:image/<%= books.image_type %>;base64,<%= books.image_data %>"
+            alt="<%= books.title %>" class="book-image" />
+        </div>
+      </div>
+
+      <!-- Right side: Book details -->
+      <div class="col-md-8">
+        <div class="card">
+          <div class="card-header">
+            <h3 class="book-title">
+              <%= books.title %>
+            </h3>
+          </div>
+          <div class="card-body">
+            <p>
+              <strong>Author:</strong>
+              <%= books.author_id %>
+            </p>
+            <p>
+              <strong>Genre:</strong>
+              <%= books.genre %>
+            </p>
+            <p>
+              <strong>Publisher:</strong>
+              <%= books.publisher %>
+            </p>
+            <p>
+              <strong>Published Year:</strong>
+              <%= books.published_year %>
+            </p>
+            <p>
+              <strong>Status:</strong>
+              <%= books.status %>
+            </p>
+            <p>
+              <strong>Quantity:</strong>
+              <%= books.quantity %>
+            </p>
+            <p>
+              <strong>Rate:</strong>
+              <%= books.rate %>
+            </p>
+            <p>
+              <strong>ISBN:</strong>
+              <%= books.isbn %>
+            </p>
+            <p><strong>Description:</strong></p>
+            <p>
+              <%= books.description %>
+            </p>
+          </div>
+          <div class="card-footer text-center">
+            <a href="/api/books/adminManagement" class="btn btn-secondary">Back to Book List</a>
+            <a href="/api/books/delete/<%= books.book_id %>" class="btn btn-primary ml-2">Delete Book</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

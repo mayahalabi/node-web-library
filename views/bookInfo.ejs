@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>
+    <%= book.title %> - Book Details
+  </title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
+  <style>
+    /* Custom colors */
+    .card-header {
+      background-color: #425664;
+      color: #f6f4f2;
+    }
+
+    .card-footer {
+      background-color: #425664;
+      color: #f6f4f2;
+    }
+
+    .card-body {
+      background-color: #d9d9d9;
+      color: #425664;
+    }
+
+    .container {
+      background-color: #f6f4f2;
+      padding: 30px;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    .book-title {
+      color: #425664;
+    }
+
+    .book-image-container {
+      background-color: #d9d9d9;
+      padding: 15px;
+      border-radius: 8px;
+      text-align: center;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .book-image {
+      max-width: 100%;
+      height: auto;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Bottom Section Styling */
+    .bottom-section {
+      max-width: 1200px;
+      height: 300px;
+      border-radius: 10px;
+      background-color: #c6ad8f;
+      border: 2px solid #425664;
+      padding: 20px;
+      margin-top: 30px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      position: relative;
+      margin-top: auto;
+    }
+
+    .comments-box {
+      max-height: 150px;
+      overflow-y: auto;
+      padding: 10px;
+      background-color: #fff;
+      border-radius: 8px;
+      border: 1px solid #ddd;
+      margin-bottom: 15px;
+    }
+
+    .comment-item {
+      padding: 10px;
+      margin-bottom: 10px;
+      background-color: #f6f4f2;
+      border-radius: 8px;
+      border: 1px solid #c6ad8f;
+      height: auto;
+    }
+
+    .comment-text {
+      font-size: 16px;
+      color: #425664;
+    }
+
+    .input-field {
+      width: 70%;
+      padding: 10px;
+      margin-right: 10px;
+      border-radius: 8px;
+      border: 1px solid #c6ad8f;
+      background-color: #f6f4f2;
+    }
+
+    .submit-btn {
+      background-color: #425664;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    .submit-btn:hover {
+      background-color: #6c757d;
+    }
+
+    .expand-btn {
+      background-color: transparent;
+      border: none;
+      color: #425664;
+      font-size: 20px;
+      cursor: pointer;
+      margin-bottom: 10px;
+    }
+
+    .form-container {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .comment-section {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 20px;
+      background-color: #f9f9f9;
+      border-radius: 8px;
+      border: 1px solid #ddd;
+      margin-top: 30px;
+      min-height: 400px;
+    }
+
+    .media {
+      margin-bottom: 20px;
+      padding: 15px;
+      background-color: #ffffff;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .media img {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+    }
+
+    .media-body {
+      margin-left: 15px;
+    }
+
+    .media-body p {
+      margin: 0;
+    }
+
+    .comment-form {
+      margin-top: 40px;
+    }
+
+    .comment-form input,
+    .comment-form textarea {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 10px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+    }
+
+    .comment-form textarea {
+      min-height: 100px;
+      /* Ensures the comment box is larger */
+      resize: vertical;
+      /* Allows users to resize vertically if they need more space */
+    }
+
+    .comment-form button {
+      background-color: #425664;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    .comment-form button:hover {
+      background-color: #6c757d;
+    }
+
+    .comment-placeholder {
+      width: 1100px;
+
+    }
+
+
+    .back-btn {
+      background-color: #425664;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      margin-bottom: 20px;
+      display: inline-block;
+    }
+
+    .back-btn:hover {
+      background-color: #6c757d;
+      border: 2px solid #6c757d;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container mt-5">
+    <form id="signinForm" action="/api/users/signin" method="POST">
+      <!-- Hidden Inputs for Username and Password -->
+      <input type="hidden" name="username" value="<%= username %>" />
+      <input type="hidden" name="password" value="<%= password %>" />
+
+      <!-- Back Button that triggers the form submission -->
+      <a href="javascript:void(0);" class="back-btn" onclick="document.getElementById('signinForm').submit();">Back</a>
+    </form>
+    <h1 class="my-4 text-center book-title">
+      <%= book.title %>
+    </h1>
+    <div class="row">
+      <div class="col-md-4">
+        <div class="book-image-container">
+          <img src="data:image/<%= book.image_type %>;base64,<%= book.image_data %>" alt="<%= book.title %>"
+            class="book-image" />
+        </div>
+      </div>
+      <div class="col-md-8">
+        <div class="card">
+          <div class="card-header">
+            <h3 class="book-title">
+              <%= book.title %>
+            </h3>
+          </div>
+          <div class="card-body">
+            <p>
+              <strong>Author:</strong>
+              <%= book.first_name %>
+                <%= book.last_name %>
+            </p>
+            <p>
+              <strong>Genre:</strong>
+              <% if (book.type && book.type.length> 0) { %>
+                <%= book.type.join(', ') %>
+              <% } else { %> No genres for this book <% } %>
+            </p>
+            <p><strong>Publisher:</strong> <%= book.publisher %></p>
+            <p><strong>Published Year:</strong> <%= book.published_year %></p>
+            <p><strong>Status:</strong> <%= book.status %></p>
+            <p><strong>Quantity:</strong> <%= book.quantity %></p>
+            <p><strong>Rate:</strong> <%= book.rate %></p>
+            <p><strong>ISBN:</strong> <%= book.isbn %></p>
+            <p><strong>Description:</strong></p>
+            <p><%= book.description %></p>
+          </div>
+          <div class="card-footer text-center">
+            <% if (isBorrowed) { %>
+              <!-- Book is already borrowed, show Return Book button -->
+              <form action="/api/books/returnBook" method="POST">
+                <input type="hidden" name="username" value="<%= username %>" />
+                <input type="hidden" name="book_id" value="<%= book.book_id %>" />
+                <button type="submit" class="btn btn-danger" style="background-color: #e74a3b; border: 2px solid #6c757d">
+                  Return Book
+                </button>
+              </form>
+            <% } else { %>
+              <!-- Book is available, show Borrow Book button -->
+              <form action="/api/books/borrowBook" method="POST">
+                <input type="hidden" name="username" value="<%= username %>" />
+                <input type="hidden" name="book_id" value="<%= book.book_id %>" />
+                <button type="submit" class="btn btn-primary" style="background-color: #425664; border: 2px solid #6c757d">
+                  Borrow Book
+                </button>
+              </form>
+            <% } %>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="comment-section">
+      <h2>Comments section</h2>
+      <div class="comment-form">
+        <h4>Leave a Comment</h4>
+        <form action="/api/comments/createComment" method="post">
+          <input type="hidden" name="username" value="<%= username %>" />
+          <input type="hidden" name="book_id" value="<%= book.book_id %>" />
+          <div>
+            <label for="rating">Rating (1-5):</label>
+            <select name="rating" required="">
+              <option value="1">1 - Poor</option>
+              <option value="2">2 - Fair</option>
+              <option value="3">3 - Good</option>
+              <option value="4">4 - Very Good</option>
+              <option value="5">5 - Excellent</option>
+            </select>
+          </div>
+          <textarea name="comment_description" rows="4" placeholder="Your Comment" required=""></textarea>
+          <button type="submit">Submit</button>
+        </form>
+      </div>
+
+      <% if (comments.length === 0) { %>
+        <div class="media-body comment-placeholder">
+          <p style="text-align:center; color: #425664; font-size: 18px;">Be the first one to comment</p>
+        </div>
+      <% } else { %>
+        <% comments.reverse().forEach(function(comment) { %>
+          <div class="media">
+            <div class="media-body comment-placeholder">
+              <h5 class="mt-0"><%= comment.username %></h5>
+              <p><%= comment.comment_description %></p>
+              <p>Rate: <%= comment.rating %> / 5</p>
+              <p><small>Posted on: <%= comment.comment_date %></small></p>
+            </div>
+          </div>
+        <% }); %>
+      <% } %>      
+    </div>
+  </div>
+</body>
+
+</html>

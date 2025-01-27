@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link href="/css/style.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet" />
+    <title>Authors</title>
+    <style>
+        /* Custom styles for buttons */
+        .btn-update {
+            background-color: #425664;
+            color: white;
+            border: none;
+        }
+
+        .btn-update:hover {
+            background-color: #2f3d48;
+            color: #ffffff;
+        }
+
+        .btn-delete {
+            background-color: #c6ad8f;
+            color: white;
+            border: none;
+        }
+
+        .btn-delete:hover {
+            background-color: #b09579;
+            color: #ffffff;
+        }
+
+        .btn-add {
+            background-color: #6c757d;
+            /* Neutral gray color for the Add button */
+            color: white;
+            border: none;
+            font-size: 1rem;
+            padding: 10px 15px;
+            /* Added padding for a better button size */
+            margin-bottom: 20px;
+            /* Space below the button */
+        }
+
+        .btn-add:hover {
+            background-color: #5a6268;
+            /* Slightly darker gray for hover effect */
+            color: white;
+        }
+
+        .btn {
+            font-size: 0.875rem;
+            /* Small button font size */
+        }
+
+        /* Header Styling */
+        h2 {
+            color: #425664;
+            /* You can change this to your preferred color */
+            margin-bottom: 20px;
+            /* Space between the header and the table */
+        }
+
+        /* Table Styling */
+        .table th,
+        .table td {
+            vertical-align: middle;
+            /* Align text vertically in the middle */
+        }
+
+        .table td {
+            padding: 0.75rem;
+            /* Adjust padding to make the table more compact */
+        }
+
+        .container {
+            margin-top: 20px;
+        }
+
+        /* Ensure the Add Author button stays at the bottom-right of the table */
+        .add-author-container {
+            text-align: right;
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+
+<body>
+    <%- include('../adminPartial/navbarAdmin', {role: 'admin' }) %>
+
+        <div class="container">
+            <!-- Add Author Button Positioned at Bottom Right -->
+            <div class="add-author-container">
+                <a href="/api/fines/add-form" class="btn btn-add">
+                    <i class="bi bi-plus-circle"></i> Add Fine
+                </a>
+            </div>
+
+            <!-- Header for Fine Management -->
+            <h2><b>Fine Management</b></h2>
+
+            <!-- Table displaying fines -->
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Fine Id</th>
+                        <th>Transaction ID</th>
+                        <th>Fine Amount</th>
+                        <th>Fine Status</th>
+                        <th>Paid Date</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% fines.forEach(fine=> { %>
+                        <tr>
+                            <td>
+                                <%= fine.fine_id %>
+                            </td>
+                            <td>
+                                <%= fine.transaction_id %>
+                            </td>
+                            <td>
+                                <%= fine.fine_amount %>
+                            </td>
+                            <td>
+                                <%= fine.fine_status %>
+                            </td>
+                            <td>
+                                <%= fine.paid_date %>
+                            </td> <!-- Check for 'paid_date' -->
+                            <td>
+                                <!-- Update Button for Transaction -->
+                                <form action="/api/fines/update/<%= fine.fine_id %>" method="POST"
+                                    style="display: inline;">
+                                    <button type="submit" class="btn btn-sm btn-update mx-1" title="Update Transaction">
+                                        <i class="bi bi-pencil"></i> Update
+                                    </button>
+                                </form>
+
+                                <!-- Delete Button -->
+                                <a href="/api/fines/delete/<%= fine.fine_id %>" title="Delete Author"
+                                    class="btn btn-sm btn-delete mx-1">
+                                    <i class="bi bi-trash"></i> Delete
+                                </a>
+                            </td>
+                        </tr>
+                        <% }) %>
+                </tbody>
+            </table>
+        </div>
+</body>
+
+</html>

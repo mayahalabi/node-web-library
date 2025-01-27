@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link href="/css/style.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet" />
+    <title>Notifications</title>
+    <style>
+        /* Custom styles for notification buttons */
+        .btn-update {
+            background-color: #425664;
+            color: white;
+            border: none;
+        }
+
+        .btn-update:hover {
+            background-color: #2f3d48;
+            color: #ffffff;
+        }
+
+        .btn-delete {
+            background-color: #c6ad8f;
+            color: white;
+            border: none;
+        }
+
+        .btn-delete:hover {
+            background-color: #b09579;
+            color: #ffffff;
+        }
+
+        .btn-add {
+            background-color: #6c757d;
+            /* Neutral gray color for the Add Notification button */
+            color: white;
+            border: none;
+            font-size: 1rem;
+            padding: 10px 15px;
+            /* Added padding for a better button size */
+            margin-bottom: 20px;
+            /* Space below the button */
+        }
+
+        .btn-add:hover {
+            background-color: #5a6268;
+            /* Slightly darker gray for hover effect */
+            color: white;
+        }
+
+        .btn {
+            font-size: 0.875rem;
+            /* Small button font size */
+        }
+
+        /* Header Styling */
+        h2 {
+            color: #425664;
+            /* You can change this to your preferred color */
+            margin-bottom: 20px;
+            /* Space between the header and the table */
+        }
+
+        /* Table Styling */
+        .table th,
+        .table td {
+            vertical-align: middle;
+            /* Align text vertically in the middle */
+        }
+
+        .table td {
+            padding: 0.75rem;
+            /* Adjust padding to make the table more compact */
+        }
+
+        .container {
+            margin-top: 20px;
+        }
+
+        /* Ensure the Add Notification button stays at the bottom-right of the table */
+        .add-notification-container {
+            text-align: right;
+            margin-bottom: 15px;
+        }
+
+        /* Make table responsive */
+        .table-responsive {
+            display: block;
+            width: 100%;
+            overflow-x: auto;
+            white-space: nowrap;
+        }
+    </style>
+</head>
+
+<body>
+    <%- include('../adminPartial/navbarAdmin', {role: 'admin' }) %>
+
+        <div class="container">
+            <!-- Add Notification Button Positioned at Bottom Right -->
+            <div class="add-notification-container">
+                <a href="/api/notifications/add-form" class="btn btn-add">
+                    <i class="bi bi-plus-circle"></i> Add Notification
+                </a>
+            </div>
+
+            <!-- Header for Notification Management, aligned to the left -->
+            <h2><b>Notification Management</b></h2>
+
+            <!-- Responsive Table Wrapper -->
+            <div class="table-responsive">
+                <!-- Table displaying notifications -->
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Notification ID</th>
+                            <th>Username</th>
+                            <th>Book ID</th>
+                            <th>Fine ID</th>
+                            <th>Reminder Date</th>
+                            <th>Message</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% notifications.forEach(function(notification) { %>
+                            <tr>
+                                <td>
+                                    <%= notification.notification_id %>
+                                </td>
+                                <td>
+                                    <%= notification.username %>
+                                </td>
+                                <td>
+                                    <%= notification.book_id %>
+                                </td>
+                                <td>
+                                    <%= notification.fine_id %>
+                                </td>
+                                <td>
+                                    <%= notification.reminder_date %>
+                                </td>
+                                <td>
+                                    <%= notification.message %>
+                                </td>
+                                <td>
+
+                                    <!-- Delete Button for Notification -->
+                                    <a href="/api/notifications/delete/<%= notification.notification_id %>"
+                                        title="Delete Notification" class="btn btn-sm btn-delete mx-1">
+                                        <i class="bi bi-trash"></i> Delete
+                                    </a>
+                                </td>
+                            </tr>
+                            <% }); %>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+</body>
+
+</html>

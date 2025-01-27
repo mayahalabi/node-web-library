@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link href="/css/style.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet" />
+    <title>Notifications</title>
+    <style>
+        /* Custom styles for notification buttons */
+        .btn-update {
+            background-color: #425664;
+            color: white;
+            border: none;
+        }
+
+        .btn-update:hover {
+            background-color: #2f3d48;
+            color: #ffffff;
+        }
+
+        .btn-delete {
+            background-color: #c6ad8f;
+            color: white;
+            border: none;
+        }
+
+        .btn-delete:hover {
+            background-color: #b09579;
+            color: #ffffff;
+        }
+
+        .btn-add {
+            background-color: #6c757d;
+            color: white;
+            border: none;
+            font-size: 1rem;
+            padding: 10px 15px;
+            margin-bottom: 20px;
+        }
+
+        .btn-add:hover {
+            background-color: #5a6268;
+            color: white;
+        }
+
+        .btn {
+            font-size: 0.875rem;
+        }
+
+        /* Header Styling */
+        h2 {
+            color: #425664;
+            margin-bottom: 20px;
+        }
+
+        /* Table Styling */
+        .table th,
+        .table td {
+            vertical-align: middle;
+        }
+
+        .table td {
+            padding: 0.75rem;
+        }
+
+        .container {
+            margin-top: 20px;
+        }
+
+        .add-notification-container {
+            text-align: right;
+            margin-bottom: 15px;
+        }
+
+        .table-responsive {
+            display: block;
+            width: 100%;
+            overflow-x: auto;
+            white-space: nowrap;
+        }
+    </style>
+</head>
+
+<body>
+    <%- include('../adminPartial/navbarAdmin', {role: 'admin' }) %>
+
+        <div class="container">
+            <!-- Add Notification Button Positioned at Bottom Right -->
+            <div class="add-notification-container">
+                <a href="/api/transactions/add-form" class="btn btn-add">
+                    <i class="bi bi-plus-circle"></i> Add Transaction
+                </a>
+            </div>
+
+            <!-- Header for Transaction Management -->
+            <h2><b>Transaction Management</b></h2>
+
+            <!-- Responsive Table Wrapper -->
+            <div class="table-responsive">
+                <!-- Table displaying transactions -->
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Transaction ID</th>
+                            <th>Username</th>
+                            <th>Book ID</th>
+                            <th>Issue Date</th>
+                            <th>Due Date</th>
+                            <th>Return Date</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% transactions.forEach(function(transaction) { %>
+                            <tr>
+                                <td>
+                                    <%= transaction.transaction_id %>
+                                </td>
+                                <td>
+                                    <%= transaction.username %>
+                                </td>
+                                <td>
+                                    <%= transaction.book_id %>
+                                </td>
+                                <td>
+                                    <%= transaction.issue_date %>
+                                </td>
+                                <td>
+                                    <%= transaction.due_date %>
+                                </td>
+                                <td>
+                                    <%= transaction.return_date %>
+                                </td>
+                                <td>
+                                    <!-- Update Button for Transaction -->
+                                    <form action="/api/transactions/update/<%= transaction.transaction_id %>"
+                                        method="POST" style="display: inline;">
+                                        <button type="submit" class="btn btn-sm btn-update mx-1"
+                                            title="Update Transaction">
+                                            <i class="bi bi-pencil"></i> Update
+                                        </button>
+                                    </form>
+
+                                    <!-- Delete Button for Transaction (Using href and JavaScript for DELETE request) -->
+                                    <a href="/api/transactions/delete/<%= transaction.transaction_id %>"
+                                        class="btn btn-sm btn-delete mx-1" title="Delete Transaction"
+                                        onclick="deleteTransaction(event, '<%= transaction.transaction_id %>')">
+                                        <i class="bi bi-trash"></i> Delete
+                                    </a>
+
+
+                                </td>
+                            </tr>
+                            <% }); %>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+</body>
+
+</html>
